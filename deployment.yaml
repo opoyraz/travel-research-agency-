@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: travel-agency
+  labels:
+    app: travel-agency
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: travel-agency
+  template:
+    metadata:
+      labels:
+        app: travel-agency
+    spec:
+      containers:
+        - name: travel-agency
+          image: your-registry/travel-agency:latest
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - secretRef:
+                name: travel-agency-secrets
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 10
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 10

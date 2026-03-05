@@ -1,0 +1,8 @@
+.env
+__pycache__/
+*.pyc
+.venv/
+.chainlit/
+qdrant_storage/
+*.log
+.DS_Store
